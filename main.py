@@ -21,11 +21,30 @@ def kman_pca():
     
     topk_e_v = e_v[:, idx]
     print(topk_e_v)
-    
+
     x_proj = np.matmul(center_v,topk_e_v)
     print(x_proj)
 
 print(v)
 
-kman_pca()
+def lu_factor():
+    # Simple poor man's lu factorization
+    n = v.shape[0]
+    U = v.copy()
+    L = np.eye(n, dtype=np.double)
+    # must be square
+    assert v.shape[0] == v.shape[1]
+    for i in range(n-1):
+        pivot = U[i][i]
+        pivot_row = U[i,:]
+        for j in range(i+1, n):
+            factor = U[j][i] / pivot
+            U[j,i:] = (U[j,i:] - (factor*pivot_row[i:]))
+            L[j][i] = factor
+    
+    return L,U
+
+L, U = lu_factor()
+print(np.matmul(L,U))
+#kman_pca()
 
