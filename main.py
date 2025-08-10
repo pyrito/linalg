@@ -44,7 +44,29 @@ def lu_factor():
     
     return L,U
 
-L, U = lu_factor()
-print(np.matmul(L,U))
+def qr_factor(m):
+    n = m.shape[0]
+    Q = np.zeros((n,n))
+    R = np.zeros((n,n))
+
+    # iterate over each column
+    for i in range(n):
+        a = m[:,i]
+        u = a
+        for j in range(i):
+            # project a onto q
+            q = Q[:,j]
+            R[j,i] = np.dot(q,a)
+            u -= (np.dot(q,a))*q
+
+        R[i,i] = np.linalg.norm(u)
+        Q[:,i] = u / R[i,i] 
+    return Q,R
+
+A = np.array([[1,1,0],[1,0,1],[0,1,1]], dtype='float64')
+Q,R = qr_factor(A)
+
+print(Q)
+print(R)
 #kman_pca()
 
