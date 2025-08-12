@@ -63,10 +63,16 @@ def qr_factor(m):
         Q[:,i] = u / R[i,i] 
     return Q,R
 
-A = np.array([[1,1,0],[1,0,1],[0,1,1]], dtype='float64')
-Q,R = qr_factor(A)
+def kman_svd(m):
+    mtm = np.linalg.matmul(m.T, m)
+    e_val, e_v = np.linalg.eig(mtm)
+    S = np.diag(np.sqrt(e_val))
+    print(S)
+    print(e_val)
+    print(e_v)
 
-print(Q)
-print(R)
-#kman_pca()
+A = np.array([[1,1,0],[1,0,1],[0,1,1]], dtype='float64')
+
+kman_svd(A)
+
 
